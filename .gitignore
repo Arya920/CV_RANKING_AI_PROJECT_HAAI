@@ -1,0 +1,21 @@
+# Ignore virtual environment
+agent/
+
+# Ignore environment variable files
+.env
+
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+*.so
+
+# Logs and temporary files
+*.log
+*.tmp
+*.swp
+
+# VSCode settings (if you use it)
+.vscode/
+
+# MacOS metadata
+.DS_Store

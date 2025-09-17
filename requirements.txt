@@ -1,0 +1,6 @@
+transformers
+pytorch
+torchvision
+torchaudio
+numind
+pdfplumber
