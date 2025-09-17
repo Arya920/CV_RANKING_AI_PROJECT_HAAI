@@ -1,6 +1,7 @@
 transformers
-pytorch
-torchvision
-torchaudio
+torch
 numind
 pdfplumber
+litellm
+streamlit
+python-dotenv
