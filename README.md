@@ -35,7 +35,7 @@ From the project root, create and activate a virtual environment and install pac
 # create venv
 python -m venv agent\
 # activate
-.\agent\Scripts\Activate.ps1
+.\agent\Scripts\Activate
 # install
 pip install -r requirements.txt
 ```
@@ -52,27 +52,6 @@ Basic script flow (example)
 - `text_extractor.extract_text_from_pdf(file)` — pass a Streamlit uploaded file or a file-like object to extract raw text.
 - `extractor.extract_resume_data(text)` — returns a dictionary with the structured fields per the schema defined in `extractor.py`.
 - `ollama_ranker.get_rank_from_ollama(experience, skills, jd)` — returns the model's rating/explanation string. Provide a job description string as `jd`.
-
-A minimal manual workflow (Python REPL)
-
-```python
-from text_extractor import extract_text_from_pdf
-from extractor import extract_resume_data
-from ollama_ranker import get_rank_from_ollama
-
-# open a local PDF file as bytes
-with open('data/20250916_093430_Bhavesh_Wadhwani_Resume.pdf.json', 'rb') as f:
-    # If you have raw PDF bytes (not JSON), use the PDF file instead. The sample data in `data/` may be pre-extracted JSON.
-    text = extract_text_from_pdf(f)
-
-structured = extract_resume_data(text)
-# Prepare experience and skills strings for ranking
-experience = '\n'.join([f"{e.get('Position','')} at {e.get('Company','')} ({e.get('Start_Date','')} - {e.get('End_Date','')})" for e in structured.get('Experience', [])])
-skills = ', '.join(structured.get('Technical Skills', []))
-
-jd = open('Senior_DS_JD.txt').read()
-print(get_rank_from_ollama(experience, skills, jd))
-```
 
 Custom prompts
 
