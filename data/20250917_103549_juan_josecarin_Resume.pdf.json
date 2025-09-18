@@ -1,0 +1,102 @@
+{
+  "result": {
+    "Personal_Information": {
+      "First Name": "Juan Jose",
+      "Last Name": "Carin",
+      "Address": "Mountain View, CA 94041",
+      "Phone_Number": "650-336-4590",
+      "Email": "juanjose.carin@gmail.com",
+      "Website": "linkedin.com/in/juanjosecarin"
+    },
+    "Education": [
+      {
+        "Degree": "Master of Information and Data Science",
+        "Institution": "University of California, Berkeley",
+        "Year": 2016
+      },
+      {
+        "Degree": "M.S. in Statistical and Computational Information Processing",
+        "Institution": "Universidad Polit\u00e9cnica de Madrid",
+        "Year": 2014
+      },
+      {
+        "Degree": "M.S. in Telecommunication Engineering",
+        "Institution": "Universidad Polit\u00e9cnica de Madrid",
+        "Year": 2005
+      }
+    ],
+    "Experience": [
+      {
+        "Position": "Data Scientist",
+        "Company": "CONENTO",
+        "Location": "Madrid, Spain",
+        "Start_Date": "2016-01-01",
+        "End_Date": "2016-03-31"
+      },
+      {
+        "Position": "Data Scientist",
+        "Company": "CONENTO",
+        "Location": "Madrid, Spain",
+        "Start_Date": "2014-06-01",
+        "End_Date": "2014-09-30"
+      },
+      {
+        "Position": "Head of Sales, Spain & Portugal \u2013 Test &Measurement dept.",
+        "Company": "YOKOGAWA",
+        "Location": "Madrid, Spain",
+        "Start_Date": "2009-02-01",
+        "End_Date": "2013-08-31"
+      },
+      {
+        "Position": "Sales Engineer \u2013 Test & Measurement dept.",
+        "Company": "YOKOGAWA",
+        "Location": "Madrid, Spain",
+        "Start_Date": "2008-04-01",
+        "End_Date": "2009-01-31"
+      },
+      {
+        "Position": "Sales & Application Engineer",
+        "Company": "AYSCOM",
+        "Location": "Madrid, Spain",
+        "Start_Date": "2004-09-01",
+        "End_Date": "2008-03-31"
+      },
+      {
+        "Position": "Tutor of Differential & Integral Calculus, Physics, and Digital Electronic Circuits",
+        "Company": "ACADEMIA UNIVERSITARIA",
+        "Location": "Madrid, Spain",
+        "Start_Date": "2002-07-01",
+        "End_Date": "2004-06-30"
+      }
+    ],
+    "Technical Skills": [
+      "R",
+      "Python",
+      "SQL",
+      "Hadoop",
+      "Hive",
+      "MrJob",
+      "Tableau",
+      "Git",
+      "AWS",
+      "SPSS",
+      "SAS",
+      "Matlab",
+      "Spark",
+      "Storm",
+      "Bash",
+      "EViews",
+      "Demetra+",
+      "D3.js",
+      "Gephi",
+      "Neo4j",
+      "QGIS"
+    ],
+    "Soft Skills": []
+  },
+  "raw_result": null,
+  "completion_tokens": 658,
+  "prompt_tokens": 1635,
+  "total_tokens": 2293,
+  "logprobs": -4.83067489029164
+}

@@ -5,3 +5,6 @@ pdfplumber
 litellm
 streamlit
 python-dotenv
+scikit-learn
+pandas
+sentence-transformers
