@@ -1,0 +1,37 @@
+{
+  "title": "DevOps Engineer",
+  "company": "CloudFirst Technologies",
+  "description": "We're looking for a DevOps Engineer to help scale our infrastructure \n        and improve our deployment processes. You'll work with cutting-edge cloud technologies \n        and automation tools.",
+  "requirements": [
+    "4+ years of DevOps or Infrastructure experience",
+    "Strong experience with AWS or Azure",
+    "Proficiency in containerization (Docker, Kubernetes)",
+    "Experience with Infrastructure as Code (Terraform, CloudFormation)",
+    "Knowledge of CI/CD tools (Jenkins, GitLab CI)",
+    "Scripting skills in Python or Bash",
+    "Experience with monitoring and logging tools",
+    "Understanding of networking and security principles"
+  ],
+  "preferred_skills": [
+    "AWS or Azure certifications",
+    "Experience with service mesh technologies",
+    "Knowledge of database administration",
+    "Experience with configuration management (Ansible, Chef)",
+    "Familiarity with agile development practices",
+    "Experience with cost optimization",
+    "Knowledge of security best practices"
+  ],
+  "responsibilities": [
+    "Design and maintain cloud infrastructure",
+    "Implement and manage CI/CD pipelines",
+    "Monitor system performance and reliability",
+    "Automate deployment and operational tasks",
+    "Ensure security and compliance standards",
+    "Troubleshoot production issues",
+    "Optimize infrastructure costs",
+    "Collaborate with development teams"
+  ],
+  "salary_range": "$110,000 - $150,000",
+  "location": "Austin, TX (Hybrid)",
+  "employment_type": "Full-time"
+}

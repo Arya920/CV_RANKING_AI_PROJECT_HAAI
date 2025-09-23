@@ -1,0 +1,37 @@
+{
+  "title": "Senior Python Developer",
+  "company": "TechInnovate Inc.",
+  "description": "We are seeking a Senior Python Developer to join our growing engineering team. \n        The ideal candidate will have extensive experience in Python development, cloud technologies, \n        and building scalable web applications.",
+  "requirements": [
+    "5+ years of Python development experience",
+    "Strong experience with Django or Flask frameworks",
+    "Experience with AWS cloud services",
+    "Knowledge of containerization (Docker, Kubernetes)",
+    "Experience with relational databases (PostgreSQL, MySQL)",
+    "Familiarity with machine learning libraries",
+    "Strong problem-solving and debugging skills",
+    "Experience with version control (Git)"
+  ],
+  "preferred_skills": [
+    "Experience with microservices architecture",
+    "Knowledge of CI/CD pipelines",
+    "Experience with Redis or other caching technologies",
+    "Familiarity with JavaScript and React",
+    "Experience mentoring junior developers",
+    "AWS certifications",
+    "Experience with data analysis and visualization"
+  ],
+  "responsibilities": [
+    "Design and develop scalable Python applications",
+    "Build and maintain REST APIs",
+    "Collaborate with cross-functional teams",
+    "Implement machine learning models in production",
+    "Optimize application performance and scalability",
+    "Mentor junior developers and conduct code reviews",
+    "Participate in architectural decisions",
+    "Maintain and improve existing codebase"
+  ],
+  "salary_range": "$120,000 - $160,000",
+  "location": "San Francisco, CA (Hybrid)",
+  "employment_type": "Full-time"
+}

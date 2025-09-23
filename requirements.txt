@@ -1,7 +1,24 @@
-transformers
-torch
-numind
-pdfplumber
-litellm
-streamlit
-python-dotenv
+# Core LLM Libraries (compatible with Python 3.13)
+langchain
+langchain-community
+
+# Document Processing
+PyPDF2==3.0.1
+python-docx==1.1.2
+pdfplumber==0.11.4
+
+# Data Science
+pandas==2.2.2
+numpy==1.26.4
+scikit-learn==1.5.1
+
+# Web Framework
+streamlit==1.38.0
+
+# Utilities
+python-dotenv==1.0.1
+requests==2.32.3
+
+# Visualization
+matplotlib==3.9.2
+seaborn==0.13.2

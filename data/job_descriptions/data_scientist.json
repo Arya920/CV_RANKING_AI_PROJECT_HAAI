@@ -1,0 +1,36 @@
+{
+  "title": "Data Scientist",
+  "company": "DataDriven Analytics",
+  "description": "Join our data science team to help build predictive models and derive \n        insights from large datasets. You'll work on cutting-edge ML projects that directly \n        impact business decisions.",
+  "requirements": [
+    "3+ years of data science experience",
+    "Strong Python programming skills",
+    "Experience with machine learning frameworks (scikit-learn, TensorFlow)",
+    "Proficiency in statistical analysis and modeling",
+    "Experience with data visualization tools",
+    "Knowledge of SQL and database systems",
+    "Strong analytical and problem-solving skills",
+    "Master's degree in Statistics, Mathematics, or related field"
+  ],
+  "preferred_skills": [
+    "PhD in quantitative field",
+    "Experience with big data technologies (Spark, Hadoop)",
+    "Knowledge of deep learning frameworks",
+    "Experience with A/B testing and experimental design",
+    "Familiarity with cloud platforms (AWS, GCP)",
+    "Experience with MLOps and model deployment",
+    "Knowledge of business intelligence tools"
+  ],
+  "responsibilities": [
+    "Develop and deploy machine learning models",
+    "Analyze large datasets to extract business insights",
+    "Create data visualizations and reports",
+    "Collaborate with product and engineering teams",
+    "Design and execute A/B tests",
+    "Maintain and improve existing models",
+    "Present findings to stakeholders"
+  ],
+  "salary_range": "$100,000 - $140,000",
+  "location": "New York, NY (Remote friendly)",
+  "employment_type": "Full-time"
+}

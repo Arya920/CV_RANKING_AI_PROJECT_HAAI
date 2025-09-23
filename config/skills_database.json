@@ -1,0 +1,27 @@
+{
+  "skill_categories": {
+    "programming_languages": [
+      "Python", "Java", "JavaScript", "TypeScript", "C++", "C#", "PHP", "Ruby", "Go", "Rust", "Swift", "Kotlin"
+    ],
+    "web_frameworks": [
+      "React", "Angular", "Vue.js", "Django", "Flask", "Spring", "Express.js", "Laravel", "Rails"
+    ],
+    "databases": [
+      "SQL", "MySQL", "PostgreSQL", "MongoDB", "Redis", "SQLite", "Oracle", "Cassandra"
+    ],
+    "cloud_platforms": [
+      "AWS", "Azure", "Google Cloud", "Docker", "Kubernetes", "Jenkins", "Terraform"
+    ],
+    "data_science": [
+      "Pandas", "NumPy", "Scikit-learn", "TensorFlow", "PyTorch", "Tableau", "Power BI"
+    ],
+    "soft_skills": [
+      "Leadership", "Communication", "Teamwork", "Problem Solving", "Project Management", "Analytical Thinking"
+    ]
+  },
+  "industry_mappings": {
+    "software_development": ["programming_languages", "web_frameworks", "databases", "cloud_platforms"],
+    "data_science": ["programming_languages", "data_science", "databases"],
+    "devops": ["cloud_platforms", "programming_languages", "databases"]
+  }
+}
