@@ -1,0 +1,6 @@
+We are looking for a Backend Engineer.
+Requirements:
+- Strong Java and Spring Boot experience
+- 4+ years of backend development
+- Knowledge of cloud (AWS preferred)
+Nice to have: Docker and Kubernetes

@@ -1,0 +1,4 @@
+Name: Alice Johnson
+Skills: Python, Machine Learning, SQL, Tableau
+Experience: 3 years as Data Analyst at XYZ Corp
+Education: B.Sc. Computer Science

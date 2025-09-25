@@ -1,0 +1,4 @@
+Name: Bob Smith
+Skills: Java, Spring Boot, AWS, Docker
+Experience: 5 years as Backend Engineer at ABC Ltd
+Education: B.Tech Information Technology

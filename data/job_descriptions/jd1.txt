@@ -1,0 +1,6 @@
+We are hiring a Machine Learning Engineer.
+Requirements:
+- Strong Python skills
+- Experience with NLP and PyTorch
+- 3+ years of experience in ML/AI projects
+Nice to have: Cloud deployment (AWS/GCP)

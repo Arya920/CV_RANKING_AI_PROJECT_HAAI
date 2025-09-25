@@ -1,0 +1,4 @@
+Name: Carol Lee
+Skills: Python, NLP, Deep Learning, PyTorch
+Experience: 4 years as ML Engineer at AI Labs
+Education: M.Sc. Artificial Intelligence
