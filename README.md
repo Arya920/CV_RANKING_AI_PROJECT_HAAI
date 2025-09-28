@@ -101,3 +101,110 @@ Contact
 
 Maintainer: Arya Chakraborty
 Email: (see `.env` or project contact)
+
+CV Sorting using LLMs (HPPCS[02])
+
+Project Title
+CV Sorting using LLMs (HPPCS[02])
+
+Abstract
+[~180 words]
+This project implements a prototype pipeline for automated CV sorting and ranking that combines structured extraction with local LLM-based scoring. The system accepts resumes (PDF/DOCX/TXT) via a Streamlit UI (`app.py`), extracts raw text (using `pdfplumber` and `python-docx`), and—when the user supplies an API key—calls NuMind to produce schema-driven structured output (Experience, Technical Skills, Education). Skill similarity between resumes and the job description is computed using Sentence-BERT embeddings with an exact-match fallback. A local LLM (Ollama via `litellm`) rates candidate experience and provides a short explanation. The final aggregate score blends the experience rating and the skill-match percentage to produce an explainable ranking. The implementation emphasizes modularity, privacy (local LLM scoring), and robust fallbacks so the demo remains usable if external services are unavailable.
+
+1. Introduction
+• Context and background
+  - Recruiters face heavy manual effort screening many CVs; automated triage can save time and standardize initial filtering.
+• Motivation
+  - Build an explainable, modular prototype that demonstrates trade-offs between vendor structured extractors and locally-run LLM reasoning.
+
+2. Problem Statement
+• Clear articulation
+  - Given a job description and a set of CVs, automatically extract relevant fields and rank candidates by fit (experience + skills) in an explainable manner while minimizing unnecessary data exposure.
+
+3. Objectives
+• Main goals
+  - Provide a Streamlit UI for resume and JD uploads (`app.py`).
+  - Extract structured data from resumes (Experience, Technical Skills) using NuMind.
+  - Compute semantic skill similarity using Sentence-BERT and combine it with an experience rating from a local LLM.
+  - Produce an explainable ranked output and require runtime API-key control for third-party extraction.
+
+4. Methodology
+• Tools and technologies used
+  - Python 3.11, Streamlit (UI)
+  - `pdfplumber`, `python-docx` for text extraction
+  - NuMind (structured extractor) — runtime API key via `structured_data_extractor.py`
+  - Sentence-Transformers (`all-MiniLM-L6-v2`) for embeddings, `scikit-learn` for cosine similarity
+  - Ollama (local LLM) via `litellm` for experience scoring
+  - Supporting libs: `numpy`, `pandas`, logging
+
+• Workflow / conceptual framework
+  1. User uploads resumes and the job description in the Streamlit app.
+  2. Raw text is extracted from the files.
+  3. If the user provides a NuMind API key, text is structured via the NuMind schema.
+  4. Skills are normalized; semantic similarity is computed with SBERT; exact matching is a fallback.
+  5. A local LLM rates experience; the system combines experience score and skill-match percentage into an aggregate score.
+
+Choice and justification of models (at least two LLMs)
+• NuMind (vendor LLM / structured extractor): specialized at schema extraction; returns structured JSON that simplifies downstream processing and reduces parsing brittleness.
+• Ollama local LLM: provides flexible experience-based scoring and natural-language explanations while running locally to preserve privacy. Using both separates extraction (structured) from reasoning (scoring) and leverages each model's strengths.
+
+5. System Design / Implementation
+• Architecture (ASCII diagram)
+
+  +----------------+     +-------------------+     +-------------------+
+  | Streamlit UI   | --> | Text Extractors    | --> | Structured Extract|
+  | (`app.py`)     |     | (pdfplumber, docx) |     | (NuMind via API)  |
+  +----------------+     +-------------------+     +-------------------+
+            |                       |                      |
+            |                       v                      v
+            |                 +-----------+         +-------------------+
+            |                 | Similarity| <-----> | Embedding Model   |
+            |                 | Module    |         | (SBERT)           |
+            |                 +-----------+         +-------------------+
+            |                       |
+            v                       v
+     +----------------+         +----------------+
+     | Local LLM Rank |         | Results UI     |
+     | (Ollama)       |         | (cards, scores) |
+     +----------------+         +----------------+
+
+• Modules and functionality
+  - `text_extraction_from_pdf.py`: robust PDF/TXT/DOCX extraction with logging and pointer resets.
+  - `structured_data_extractor.py`: NuMind wrapper exposing `set_numind_api_key`, `extract_resume_data`, `extract_jd_data` and returning explicit error dicts when unconfigured.
+  - `similarity_checking.py`: SBERT-based semantic matching with exact-match fallback; function `process_resume_and_jd` returns final_match_score and explanation.
+  - `ranker.py`: calls local Ollama to get an experience rating and explanation.
+  - `components.py`: UI helpers for rendering candidate cards and extracting ratings.
+  - `app.py`: Streamlit orchestration and input validation; enforces runtime API-key requirement and shows per-candidate diagnostics.
+
+6. Results and Analysis
+• Key findings
+  - Semantic embeddings (SBERT) increase robustness to synonyms and near-miss skill phrases versus strict exact matching.
+  - NuMind simplifies field extraction but requires explicit user consent (API key) and network access; the app uses fallbacks to remain functional offline.
+  - Local LLM-based scoring produces readable explanations; prompt consistency improves downstream parsing.
+
+• Example outputs
+  - Ranked candidate cards with Experience Rating, Skill Match percentage, Aggregate Score, and expandable explanation (see `app.py` + `components.py`).
+
+7. Conclusion and Future Work
+• Summary of contributions
+  - A modular prototype demonstrating a dual-LLM approach (structured extraction + local scoring) for explainable CV sorting.
+
+• Possible extensions
+  - Add OCR fallback (Tesseract/pytesseract) for image PDFs.
+  - Force JSON output from the ranking LLM for deterministic parsing.
+  - Add unit tests and a small sample dataset with evaluation metrics.
+  - Investigate open-source local extractors to remove external API dependency.
+
+8. References
+• NuMind: https://numind.ai
+• Ollama: https://ollama.ai
+• litellm: https://github.com/abidlabs/litellm
+• Sentence Transformers: https://www.sbert.net/
+• pdfplumber: https://github.com/jsvine/pdfplumber
+• python-docx: https://python-docx.readthedocs.io/
+
+Acknowledgement
+Student: Arya Chakraborty
+
+Notes for Students (Delete before submission)
+• Replace placeholders (e.g., Abstract length) and format in Times New Roman, 12pt, 1.5 line spacing. Keep the final report within 3 pages.
