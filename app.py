@@ -6,11 +6,12 @@ import json
 from datetime import datetime
 import time
 
-from core.text_extraction_from_pdf import extract_text_from_pdf, extract_text_from_txt
-from core.structured_data_extractor import extract_resume_data, extract_jd_data
-from core.ranker import get_rank_from_ollama
-from core.similarity_checking import process_resume_and_jd
-from ui.components import card, extract_rating
+from text_extraction_from_pdf import extract_text_from_pdf, extract_text_from_txt
+from structured_data_extractor import extract_resume_data, extract_jd_data
+from structured_data_extractor import set_numind_api_key
+from ranker import get_rank_from_ollama
+from similarity_checking import process_resume_and_jd
+from components import card, extract_rating
 
 # --- Streamlit Page Config ---
 st.set_page_config(
@@ -38,16 +39,22 @@ st.markdown("""
     }
     
     /* Headers and text */
-    h1 {
-        color: #1a237e;
-        font-weight: 600;
-        margin-bottom: 1.5rem;
+    /* Header styles */
+    .headerTitle {
+        color: #0f172a; /* slate-900 */
+        font-weight: 700;
+        font-size: 2.1rem;
+        margin: 0;
+        letter-spacing: -0.5px;
+        font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
     }
-    
-    .subtitle {
-        color: #424242;
-        font-size: 1.1rem;
-        margin-bottom: 2rem;
+
+    .tagline {
+        color: #475569; /* slate-500 */
+        font-size: 1.05rem;
+        margin-top: 0.4rem;
+        margin-bottom: 1.6rem;
+        line-height: 1.45;
     }
     
     /* File upload area */
@@ -75,14 +82,41 @@ st.markdown("""
 # Header Section
 col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
-    st.title("🎯 Smart Resume & JD Matcher")
-    st.markdown(
-        """<p class='subtitle'>
-        Transform your hiring process with AI-powered resume screening. 
-        Upload resumes and job descriptions to find the perfect match.
-        </p>""", 
-        unsafe_allow_html=True
-    )
+    st.markdown("""
+    <div style='text-align: center;'>
+      <h1 class='headerTitle'>AstraMatch</h1>
+      <p class='tagline'>Precision candidate matching — fast, private, and tailored to your job requirements.</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+# --- Sidebar: NuMind API Key ---
+with st.sidebar.expander("NuMind API Key (required for structured extraction)", expanded=True):
+    st.write("Provide your NuMind API key so the app can call the extraction API.\nYou can paste the key or upload a small .txt file containing the key.")
+    api_key_input = st.text_input("Paste NuMind API Key", value="", type="password")
+    api_key_file = st.file_uploader("Or upload a .txt file with the key", type=["txt"], key="api_key_file")
+
+    api_key_set = False
+    if api_key_file is not None:
+        try:
+            api_key_candidate = api_key_file.getvalue().decode('utf-8').strip()
+            if api_key_candidate:
+                api_key_set = set_numind_api_key(api_key_candidate)
+        except Exception:
+            api_key_set = False
+
+    if api_key_input:
+        api_key_set = set_numind_api_key(api_key_input)
+
+    if api_key_set:
+        st.success("NuMind API key configured")
+        st.session_state.numind_configured = True
+    else:
+        st.info("NuMind API key not configured. Structured extraction will be disabled until you provide a key.")
+        st.session_state.numind_configured = False
+
+    # Debug toggle
+    debug_mode = st.checkbox("Show debug logs (verbose)", value=False)
+    st.session_state.debug_mode = bool(debug_mode)
 
 # --- File Upload Section ---
 st.markdown("""<div class="stCard">""", unsafe_allow_html=True)
@@ -95,8 +129,8 @@ with col1:
     st.markdown("### 📄 Resume Upload")
     st.markdown("Upload up to 5 resumes in PDF format")
     resumes = st.file_uploader(
-        "Choose PDF files",
-        type=["pdf"],
+        "Choose resume files",
+        type=["pdf", "docx"],
         accept_multiple_files=True,
         help="Maximum 5 resumes allowed"
     )
@@ -108,6 +142,7 @@ with col3:
     st.markdown("""<div class="uploadSection">""", unsafe_allow_html=True)
     st.markdown("### 📝 Job Description")
     
+    jd_text = None
     jd_option = st.radio(
         "Choose input method:",
         ("Upload a file", "Write your own JD"),
@@ -151,6 +186,110 @@ if resumes and len(resumes) > 5:
     st.warning("You can upload a maximum of 5 resumes.")
     resumes = resumes[:5]
 
+# Initialize the application class
+class DocumentProcessor:
+    def __init__(self):
+        self.max_resumes = 5
+        
+    def process_resume(self, resume_file):
+        try:
+            # Choose extractor by file extension
+            name_lower = getattr(resume_file, 'name', '').lower()
+            # reset file pointer before reading
+            try:
+                resume_file.seek(0)
+            except Exception:
+                pass
+
+            if name_lower.endswith('.pdf'):
+                try:
+                    text = extract_text_from_pdf(resume_file)
+                except Exception as e:
+                    st.warning(f"⚠️ Skipped {getattr(resume_file, 'name', 'unknown')} - PDF extraction error: {e}")
+                    return None
+            elif name_lower.endswith('.docx'):
+                try:
+                    from text_extraction_from_pdf import extract_text_from_docx
+                    text = extract_text_from_docx(resume_file)
+                except RuntimeError as e:
+                    # Missing python-docx dependency
+                    st.warning(f"⚠️ Skipped {getattr(resume_file, 'name', 'unknown')} - DOCX extraction not available: {e}")
+                    return None
+                except Exception as e:
+                    st.warning(f"⚠️ Skipped {getattr(resume_file, 'name', 'unknown')} - DOCX extraction error: {e}")
+                    return None
+            else:
+                st.warning(f"⚠️ Skipped {getattr(resume_file, 'name', 'unknown')} - Unsupported file type")
+                return None
+
+            if not text or not str(text).strip():
+                st.warning(f"⚠️ Skipped {getattr(resume_file, 'name', 'unknown')} - No extractable text found in the file.")
+                return None
+
+            # Call structured extractor
+            try:
+                result = extract_resume_data(text)
+            except Exception as e:
+                st.warning(f"⚠️ Skipped {getattr(resume_file, 'name', 'unknown')} - Structured extraction raised an error: {e}")
+                return None
+
+            # If extraction returned an error dict, show it to the user
+            if isinstance(result, dict) and result.get('error'):
+                st.warning(f"⚠️ Skipped {getattr(resume_file, 'name', 'unknown')} - {result.get('error')}")
+                # show raw result in debug mode
+                if st.session_state.get('debug_mode'):
+                    st.debug(result)
+                return None
+
+            # Show debug info when enabled
+            if st.session_state.get('debug_mode'):
+                try:
+                    snippet = (text[:500] + '...') if len(text) > 500 else text
+                    st.info(f"Debug: Extracted text snippet for {getattr(resume_file, 'name', 'unknown')}:\n{snippet}")
+                except Exception:
+                    pass
+                try:
+                    st.info(f"Debug: Structured extraction output for {getattr(resume_file, 'name', 'unknown')}: {str(result)[:1000]}")
+                except Exception:
+                    pass
+
+            # Success
+            return {
+                "filename": resume_file.name,
+                "text": text,
+                "extracted": result
+            }
+        except Exception as e:
+            return None
+
+    def process_jd(self, jd_text: str):
+        try:
+            jd_data = extract_jd_data(jd_text)
+
+            # jd_data may be a dict with 'error' or an object with .result
+            if isinstance(jd_data, dict):
+                if jd_data.get('error'):
+                    return None
+                # If dict contains 'result' mapping, use it
+                jd_result = jd_data.get('result', jd_data)
+            else:
+                # obj-like
+                jd_result = getattr(jd_data, 'result', None)
+
+            if not jd_result:
+                return None
+
+            return {
+                "text": jd_text,
+                "experience": jd_result.get('Experience Required', "Not provided"),
+                "skills": jd_result.get('Skills Required', []),
+                "raw_data": jd_result
+            }
+        except Exception as e:
+            return None
+
+processor = DocumentProcessor()
+
 # Analysis Section
 analyze_col1, analyze_col2, analyze_col3 = st.columns([1, 2, 1])
 with analyze_col2:
@@ -161,150 +300,144 @@ with analyze_col2:
     )
 
 if analyze_button:
-    if not resumes:
+    # Ensure NuMind is configured before running extraction
+    if not st.session_state.get('numind_configured', False):
+        st.warning("Provide the NuMind API Key in the sidebar before analyzing.")
+    elif not resumes:
         st.error("⚠️ Please upload at least one resume to analyze.")
-    elif not jd_text:
+    elif not jd_text or not str(jd_text).strip():
         st.error("⚠️ Please provide a job description for analysis.")
     else:
-        # Progress bar
+        # Progress bar and status
         progress_bar = st.progress(0)
         status_text = st.empty()
         
         # Initialize counters
-        total_steps = len(resumes) + 3  # Resumes + JD + Analysis + Ranking
+        total_steps = len(resumes) + 3
         current_step = 0
-        
-        # Spinner: Resume Extraction
-        extracted_resumes = []
-        status_text.text("📂 Processing resumes...")
-        progress_bar.progress(current_step / total_steps)
-        for i, resume in enumerate(resumes):
-            text = extract_text_from_pdf(resume)
-            if not text.strip():
-                st.warning(f"⚠️ Skipped {resume.name} - Empty or failed PDF.")
-                continue
-
-            result = extract_resume_data(text)
-            extracted_resumes.append({
-                "filename": resume.name,
-                "text": text,
-                "extracted": result
-            })
-            
-            # Update progress
-            current_step = i + 1
-            progress_bar.progress(current_step / total_steps)
-            status_text.text(f"📂 Processing resume {i+1} of {len(resumes)}...")
-
-        # Extract JD data and save it to session
-        current_step += 1
-        progress_bar.progress(current_step / total_steps)
-        status_text.text("📄 Processing job description...")
-        
-        jd_data = extract_jd_data(jd_text)
-        if hasattr(jd_data, 'error'):
-            st.error("❌ Failed to extract job description data.")
-            st.stop()
-
-        # Extract JD Skills and Experience
-        jd_experience = jd_data.result.get('Experience Required', "Not provided")
-        jd_skills = jd_data.result.get('Skills Required', [])
-        
-        # Show extracted JD info in an expander
-        with st.expander("📋 Job Description Analysis"):
-            st.markdown("### Key Requirements")
-            if jd_skills:
-                st.write("**Required Skills:**")
-                st.write(", ".join(jd_skills))
-            if jd_experience != "Not provided":
-                st.write("**Required Experience:**")
-                st.write(jd_experience)
-        
-        st.session_state.extracted_jd = jd_data.result
-        st.session_state.jd_experience = jd_experience
-
-        print(f"JD Experience: {st.session_state.jd_experience}")
-        print(f"JD Skills: {jd_skills}")
-
-        if not extracted_resumes:
-            st.error("❌ No valid resumes extracted.")
-            st.stop()
-
-        # Save resumes to session
-        st.session_state.extracted_resumes = extracted_resumes
-
-        # Ranking via LLM
         rankings = []
-        current_step += 1
-        progress_bar.progress(current_step / total_steps)
-        status_text.text("🧠 Analyzing candidates...")
         
-        for i, r in enumerate(st.session_state.extracted_resumes):
-                extracted_data = r["extracted"]
-                result_data = extracted_data.result if hasattr(extracted_data, 'result') else {}
-
-                # Extract experience from resume
-                experience = result_data.get("Experience", "Not provided")
-                name = extracted_data.result.get("name", r["filename"])
-
-                # Call Ollama model (pass only experience data)
-                response = get_rank_from_ollama(
-                    experience=experience,
-                    jd=st.session_state.jd_experience
-                )
-                print(f"Response for {name}: {response}")
-
-                # Extract skills from resume to compute similarity
-                resume_skills = result_data.get("Technical Skills", [])
-
-                # Check if JD skills are missing or empty before calling process_resume_and_jd
-                if jd_skills:
-                    # Call the function to get skill match similarity
-                    skill_match_result = process_resume_and_jd(
-                        {"result": {"Technical Skills": resume_skills}},
-                        {"Skills Required": jd_skills}
-                    )
-                    print(f"Skill Match for {name}: {skill_match_result}")
-                    skill_score_out_of_100 = skill_match_result["final_match_score"]
-                else:
-                    skill_match_result = {"final_match_score": 0, "explanation": "No JD skills provided."}
-                    skill_score_out_of_100 = 0
-
-                # Extract experience score (already out of 10)
-                experience_score = extract_rating(response) *10
-
-                # Combine into aggregate score (give more weight to skills)
-                aggregate_score = (experience_score * 0.4) + (skill_score_out_of_100 * 0.6)
+        try:
+            # Process resumes
+            extracted_resumes = []
+            status_text.text("📂 Processing resumes...")
+            
+            for i, resume in enumerate(resumes[:processor.max_resumes]):
+                try:
+                    resume_data = processor.process_resume(resume)
+                    if resume_data:
+                        extracted_resumes.append(resume_data)
+                    else:
+                        st.warning(f"⚠️ Skipped {resume.name} - Could not process PDF.")
+                except Exception as e:
+                    st.warning(f"⚠️ Error processing {resume.name}")
+                    continue
                 
-
-                # Store ranking
-                rankings.append({
-                    "name": name,
-                    "score_and_explanation": response,
-                    "skill_match_result": skill_match_result,
-                    "aggregate_score": aggregate_score
-                })
-
-
-        # Sort and Display Rankings
-        # Sort and Display Rankings by aggregate score
-        rankings.sort(key=lambda x: x["aggregate_score"], reverse=True)
-
-        # ✅ Final progress update
-        current_step += 1
-        progress_bar.progress(1.0)
-        st.success("✅ All resumes ranked successfully!")
-
-        time.sleep(1)
-        progress_bar.empty()
-        status_text.empty()
-
-        st.header("🏆 Final Candidate Rankings")
-        for rank in rankings:
-            card(
-                rank["name"],
-                rank["score_and_explanation"],
-                skill_info=rank["skill_match_result"],
-                aggregate_score=rank["aggregate_score"]
-            )
+                current_step = i + 1
+                progress_bar.progress(current_step / total_steps)
+                status_text.text(f"📂 Processing resume {i+1} of {len(resumes)}")
+            
+            if not extracted_resumes:
+                st.error("❌ No valid resumes could be processed.")
+                st.stop()
+            
+            # Process job description
+            try:
+                current_step += 1
+                progress_bar.progress(current_step / total_steps)
+                status_text.text("📄 Processing job description...")
+                
+                jd_result = processor.process_jd(jd_text)
+                if not jd_result:
+                    st.error("❌ Failed to process job description.")
+                    st.stop()
+                
+                jd_experience = jd_result["experience"]
+                jd_skills = jd_result["skills"]
+                st.session_state.jd_experience = jd_experience
+                
+            except Exception as e:
+                st.error("❌ Error processing job description.")
+                st.stop()
+            
+            # Rank candidates
+            current_step += 1
+            progress_bar.progress(current_step / total_steps)
+            status_text.text("🧠 Analyzing candidates...")
+            
+            for resume_data in extracted_resumes:
+                try:
+                    result_data = resume_data["extracted"].result if hasattr(resume_data["extracted"], 'result') else {}
+                    
+                    experience = result_data.get("Experience", "Not provided")
+                    name = result_data.get("name", resume_data["filename"])
+                    resume_skills = result_data.get("Technical Skills", [])
+                    
+                    response = get_rank_from_ollama(
+                        experience=experience,
+                        jd=jd_experience
+                    )
+                    
+                    skill_match_result = {}
+                    skill_score_out_of_100 = 0
+                    
+                    if jd_skills:
+                        try:
+                            skill_match_result = process_resume_and_jd(resume_skills, jd_skills)
+                            # process_resume_and_jd returns keys 'final_match_score' and 'score'
+                            if isinstance(skill_match_result, dict):
+                                skill_score_out_of_100 = skill_match_result.get("score", skill_match_result.get("final_match_score", 0))
+                                # ensure final_match_score key exists for UI
+                                if "final_match_score" not in skill_match_result:
+                                    skill_match_result["final_match_score"] = skill_score_out_of_100
+                            else:
+                                # unexpected return type
+                                skill_match_result = {"final_match_score": 0.0, "explanation": "Unexpected skill matcher output"}
+                                skill_score_out_of_100 = 0
+                        except Exception as e:
+                            # Log and continue gracefully
+                            import logging
+                            logging.exception(f"Skill matching failed for {name}: {e}")
+                            st.warning(f"⚠️ Error matching skills for {name}")
+                            skill_match_result = {"final_match_score": 0.0, "explanation": "Error computing skill match", "error": str(e)}
+                            skill_score_out_of_100 = 0
+                    
+                    experience_score = extract_rating(response) * 10
+                    aggregate_score = (experience_score * 0.4) + (skill_score_out_of_100 * 0.6)
+                    
+                    rankings.append({
+                        "name": name,
+                        "score_and_explanation": response,
+                        "skill_match_result": skill_match_result,
+                        "aggregate_score": aggregate_score
+                    })
+                except Exception as e:
+                    st.warning(f"⚠️ Error analyzing candidate {resume_data['filename']}")
+                    continue
+            
+            if not rankings:
+                st.error("❌ No candidates could be ranked.")
+                st.stop()
+            
+            rankings.sort(key=lambda x: x["aggregate_score"], reverse=True)
+            
+            progress_bar.progress(1.0)
+            st.success("✅ Analysis completed successfully!")
+            
+            time.sleep(1)
+            progress_bar.empty()
+            status_text.empty()
+            
+            st.header("🏆 Final Candidate Rankings")
+            for rank in rankings:
+                card(
+                    rank["name"],
+                    rank["score_and_explanation"],
+                    skill_info=rank["skill_match_result"],
+                    aggregate_score=rank["aggregate_score"]
+                )
+                
+        except Exception as e:
+            st.error("❌ An unexpected error occurred during analysis.")
+            st.stop()
 

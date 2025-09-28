@@ -4,10 +4,32 @@ import os
 from dotenv import load_dotenv
 from numind import NuMind
 
-# Load API key from .env file
-load_dotenv()
-api_key = os.getenv("NUMIND_API_KEY")
-client = NuMind(api_key=os.environ["NUMIND_API_KEY"])
+# Do NOT auto-load API key from environment. Require the user to provide it at runtime.
+_api_key = None
+_client = None
+
+
+def set_numind_api_key(key: str) -> bool:
+    """Set the NuMind API key at runtime and init the client.
+
+    Returns True if client initialized successfully, False otherwise.
+    """
+    global _api_key, _client
+    try:
+        if not key or not key.strip():
+            return False
+        _api_key = key.strip()
+        _client = NuMind(api_key=_api_key)
+        return True
+    except Exception as e:
+        # Leave _client as None on failure
+        _client = None
+        return False
+
+
+def is_numind_configured() -> bool:
+    """Return True if the NuMind client is configured."""
+    return _client is not None
 
 
 def extract_resume_data(text: str) -> dict:
@@ -45,7 +67,9 @@ def extract_resume_data(text: str) -> dict:
         ]
     }
     try:
-        output = client.extract(template=schema1, input_text=text)
+        if _client is None:
+            return {"error": "NuMind client not configured. Please provide API key in the application sidebar."}
+        output = _client.extract(template=schema1, input_text=text)
         return output
     except Exception as e:
         return {"error": str(e)}
@@ -60,7 +84,9 @@ def extract_jd_data(text: str) -> dict:
         ]
     }
     try:
-        output = client.extract(template=schema2, input_text=text)
+        if _client is None:
+            return {"error": "NuMind client not configured. Please provide API key in the application sidebar."}
+        output = _client.extract(template=schema2, input_text=text)
         return output
     except Exception as e:
         return {"error": str(e)}
