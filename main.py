@@ -6,7 +6,7 @@ import json
 from datetime import datetime
 import time
 
-from text_extraction_from_pdf import extract_text_from_pdf, extract_text_from_txt
+from text_extractor import extract_text_from_pdf, extract_text_from_txt
 from structured_data_extractor import extract_resume_data, extract_jd_data
 from structured_data_extractor import set_numind_api_key
 from ranker import get_rank_from_ollama
@@ -209,7 +209,7 @@ class DocumentProcessor:
                     return None
             elif name_lower.endswith('.docx'):
                 try:
-                    from text_extraction_from_pdf import extract_text_from_docx
+                    from text_extractor import extract_text_from_docx
                     text = extract_text_from_docx(resume_file)
                 except RuntimeError as e:
                     # Missing python-docx dependency

@@ -1,0 +1,12 @@
+FIrst the user needs to upload the Numind API Key in the streamlit side bar (either copy paste or upload a file), then He can upload sample resumes (upto 5) (both pdf and Docx supported) and sample JD (either txt file or streamlit text input (live editing possible in this case))
+
+then PDF plaumber will be used to extract raw text from the resume and normal text parsing from JD. 
+
+then both the text will go to the Numind/Nuextract model which will then return the output in structured format (JSON format). 
+
+then the skills (required from JD and the present ones from resume) will be taken and semantic similarity will be calculated using SBERT (Lm-v6) that will be the skill score. 
+Then the experience will be takes from JD (required experience) and Resume (the experience the candidate have) and both will go to the local Llama3.2-3B model in Ollama+Litellm , it will give an experience score and also an proper explanation/justification. 
+
+Then both the scores will be aggregated (final_score = 0.6*skill_score + 0.4*experience_score)
+
+this final score will be used to rank the candidate among themselves. 
