@@ -131,12 +131,3 @@ This repository contains a modular prototype that combines vendor-structured ext
 - python-docx: https://python-docx.readthedocs.io/
 
 ---
-
-### Acknowledgement
-
-Student: Arya Chakraborty
-
-### Notes for submission
-
-- Replace the Abstract placeholder with a 150–250 word summary before submission.
-- Use Times New Roman, 12pt, 1.5 line spacing for the final PDF and keep the report within 3 pages.
