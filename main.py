@@ -1,4 +1,17 @@
-# app.py
+"""
+Streamlit front-end for AstraMatch (resume ↔ job-description matcher).
+
+This module provides the Streamlit UI and orchestration for uploading
+resumes and a job description, invoking text extraction, structured
+extraction (NuMind), similarity matching, and a local LLM-based ranker.
+
+Key behaviors:
+- The NuMind API key must be provided in the sidebar at runtime.
+- Resumes may be PDF or DOCX. Extraction functions return empty strings
+    on failure and the UI will skip files with no extractable text.
+- All user-visible errors are handled and presented as warnings/messages
+    in the Streamlit UI; exceptions are not propagated to end users.
+"""
 
 import streamlit as st
 import os
@@ -188,10 +201,32 @@ if resumes and len(resumes) > 5:
 
 # Initialize the application class
 class DocumentProcessor:
+    """Small helper class to encapsulate resume and JD processing.
+
+    This class keeps helper methods together so the UI code is easier to
+    follow and unit-testable. Methods do not raise errors to the UI; they
+    return None on failure which the caller treats as a skipped file.
+    """
     def __init__(self):
+        """Initialize a DocumentProcessor.
+
+        Attributes:
+            max_resumes (int): maximum number of resumes to process.
+        """
         self.max_resumes = 5
         
     def process_resume(self, resume_file):
+        """Extract plain text and structured data from a single resume file.
+
+        Inputs:
+            resume_file: a Streamlit uploaded file-like object with `.name`.
+
+        Behavior:
+            - Detects PDF vs DOCX by filename suffix and dispatches to the
+              appropriate extractor.
+            - Returns a dict with keys 'filename', 'text', and 'extracted'
+              on success. Returns None on any failure so the UI can skip it.
+        """
         try:
             # Choose extractor by file extension
             name_lower = getattr(resume_file, 'name', '').lower()
@@ -263,6 +298,19 @@ class DocumentProcessor:
             return None
 
     def process_jd(self, jd_text: str):
+        """Process the provided job description text via NuMind.
+
+        The function expects raw JD text and returns a dict with extracted
+        fields or None if processing failed. The NuMind wrapper may return
+        a dict with an `error` key; in that case this function returns None
+        to indicate failure to the caller.
+
+        Returned dict keys on success:
+            - text: the raw JD text
+            - experience: extracted experience requirement or a default string
+            - skills: list of extracted skills
+            - raw_data: the full structured output from NuMind
+        """
         try:
             jd_data = extract_jd_data(jd_text)
 
@@ -286,6 +334,7 @@ class DocumentProcessor:
                 "raw_data": jd_result
             }
         except Exception as e:
+            # Swallow errors and return None so the UI can show a friendly message
             return None
 
 processor = DocumentProcessor()

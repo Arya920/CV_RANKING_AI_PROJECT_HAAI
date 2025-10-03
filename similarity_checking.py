@@ -6,7 +6,14 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 logger = logging.getLogger(__name__)
 
-# Load pre-trained SBERT model (or choose any other suitable model)
+
+# This module provides helper utilities for extracting skill lists from
+# structured outputs and computing a combined skill-match score using
+# semantic embeddings (SBERT) with a safe fallback to exact matching.
+# The functions are defensive: they return numeric scores and never raise
+# (they log exceptions and fall back where appropriate).
+
+# Load pre-trained SBERT model (or set to None if loading fails)
 try:
     model = SentenceTransformer('all-MiniLM-L6-v2')
 except Exception as e:
@@ -15,13 +22,16 @@ except Exception as e:
 
 
 def _ensure_skill_list(x: Union[List[str], Dict[str, Any], None]) -> List[str]:
-    """Normalize input to a list of skill strings.
+    """
+    Normalize a variety of possible skill representations into a list of strings.
 
     Accepts:
-      - list of strings (returned as-is)
-      - dict with keys like 'result' -> {'Technical Skills': [...]}
-      - dict with 'Technical Skills' at top-level
-      - None -> []
+      - list[str]: returned as a cleaned list
+      - dict (NuMind-like): will try common keys such as 'result' -> {'Technical Skills': [...]}
+      - dict (JD-like): will check for 'Skills Required'
+      - None: returns []
+
+    The function is defensive and attempts a best-effort conversion.
     """
     if not x:
         return []
@@ -49,19 +59,30 @@ def _ensure_skill_list(x: Union[List[str], Dict[str, Any], None]) -> List[str]:
 
 
 def extract_skills_from_resume(resume_data: Union[List[str], Dict[str, Any]]):
-    """Extract the technical skills from the parsed resume or accept a skill list."""
+    """Return a normalized list of skills extracted from resume data.
+
+    Input can be a parsed resume dict, a list of skills, or raw text.
+    """
     return _ensure_skill_list(resume_data)
 
 
 def extract_skills_from_jd(jd_data: Union[List[str], Dict[str, Any]]):
-    """Extract skills required from JD or accept a skill list."""
+    """Return a normalized list of required skills from a job description.
+
+    Input may be a dict with key 'Skills Required' or a simple list.
+    """
     return _ensure_skill_list(jd_data)
 
 
 def calculate_skills_match(resume_skills: List[str], jd_skills: List[str]) -> float:
-    """Calculate semantic match percentage between resume skills and JD skills using SBERT.
+    """
+    Compute a semantic match percentage between resume skills and JD skills.
 
-    Returns a score between 0 and 100. Handles empty lists and model errors gracefully.
+    Uses SBERT embeddings and cosine similarity to compute how well each JD
+    skill maps to the resume skill set. Returns a percentage in [0, 100].
+
+    If the SBERT model is not available or an error occurs, the function
+    falls back to `calculate_exact_match`.
     """
     # Normalize inputs
     resume_skills = [s for s in (resume_skills or []) if s]
@@ -103,7 +124,12 @@ def calculate_skills_match(resume_skills: List[str], jd_skills: List[str]) -> fl
 
 
 def calculate_exact_match(jd_skills: List[str], resume_skills: List[str]) -> float:
-    """Calculate the exact match percentage between resume skills and JD skills."""
+    """
+    Calculate the exact-match percentage between JD skills and resume skills.
+
+    All comparisons are lower-cased and stripped to reduce trivial mismatches.
+    Returns a float percentage in [0, 100].
+    """
     jd_skills_set = set([s.lower().strip() for s in (jd_skills or []) if s])
     resume_skills_set = set([s.lower().strip() for s in (resume_skills or []) if s])
 
@@ -117,7 +143,11 @@ def calculate_exact_match(jd_skills: List[str], resume_skills: List[str]) -> flo
 
 
 def calculate_final_skills_match(jd_skills: List[str], resume_skills: List[str]) -> float:
-    """Combine exact match and semantic match to calculate final match score."""
+    """
+    Combine exact-match and semantic-match scores into a single final percentage.
+
+    Default weights: exact 40% and semantic 60% (tunable).
+    """
     exact_match = calculate_exact_match(jd_skills, resume_skills)
     semantic_match = calculate_skills_match(resume_skills, jd_skills)
 
@@ -128,10 +158,15 @@ def calculate_final_skills_match(jd_skills: List[str], resume_skills: List[str])
 
 
 def process_resume_and_jd(resume_data: Union[List[str], Dict[str, Any]], jd_data: Union[List[str], Dict[str, Any]]):
-    """Process a resume and a job description, calculate skill matching score.
+    """
+    Top-level helper to take resume and JD inputs (various shapes), compute
+    the final skills match percentage, and return a small result dict.
 
-    Accepts either parsed dicts (with 'result' etc.) or raw lists of skills.
-    Returns a dictionary with final_match_score and explanation. Never raises.
+    Returns:
+      {"final_match_score": float, "explanation": str, "score": float}
+
+    This function never raises; on error it logs the exception and returns
+    a zeroed score with an explanatory message.
     """
     try:
         # Extract skills from both resume and JD

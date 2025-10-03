@@ -1,4 +1,12 @@
-# extractor.py
+"""
+Wrapper utilities for calling the NuMind structured extraction client.
+
+This module intentionally avoids auto-loading API keys from the environment
+— the application must call `set_numind_api_key` at runtime to initialize
+the client. All extraction functions return well-formed dicts and will
+return an `{"error": ...}` mapping when the client is not configured or
+an exception occurs.
+"""
 
 import os
 from dotenv import load_dotenv
@@ -10,9 +18,11 @@ _client = None
 
 
 def set_numind_api_key(key: str) -> bool:
-    """Set the NuMind API key at runtime and init the client.
+    """
+    Initialize the NuMind client at runtime using the provided API key.
 
-    Returns True if client initialized successfully, False otherwise.
+    Returns True if the client was initialized successfully, False otherwise.
+    The function does not raise; callers can check `is_numind_configured()`.
     """
     global _api_key, _client
     try:
@@ -28,12 +38,17 @@ def set_numind_api_key(key: str) -> bool:
 
 
 def is_numind_configured() -> bool:
-    """Return True if the NuMind client is configured."""
+    """Return True if the NuMind client is currently configured."""
     return _client is not None
 
 
 def extract_resume_data(text: str) -> dict:
-    """Extract structured resume data from raw text using NuMind."""
+    """
+    Send raw resume text to NuMind and return structured JSON per the schema.
+
+    On failure or if the client is not configured the function returns a
+    dictionary containing an `error` key.
+    """
     schema1 = {
         "Personal_Information": {
             "First Name": "verbatim-string",
@@ -74,8 +89,13 @@ def extract_resume_data(text: str) -> dict:
     except Exception as e:
         return {"error": str(e)}
     
+
 def extract_jd_data(text: str) -> dict:
-    """Extract structured job description data from raw text using NuMind."""
+    """
+    Send raw job-description text to NuMind and return structured fields.
+
+    Returns a dict or an `{"error": ...}` mapping on failure.
+    """
     schema2 = {
         "Job Title": "verbatim-string",
         "Experience Required": "string",

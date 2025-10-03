@@ -1,9 +1,26 @@
 from litellm import completion
 
+
+# Wrapper around a local Ollama call. This module keeps the prompt
+# definition centralized so the app can request experience-only scoring
+# from the local model. The function returns the raw model text output
+# (expected to contain a rating and a short explanation). The caller
+# is responsible for parsing the returned string.
 def get_rank_from_ollama(experience: str, jd: str) -> str:
     """
-    Call local Ollama model to get ranking score and explanation based solely on experience.
-    Assumes Ollama is running locally on port 11434.
+    Call the local Ollama model to obtain an experience-based rating and explanation.
+
+    Parameters
+    - experience: free-text summary of the candidate's experience
+    - jd: the job description experience requirement (free text)
+
+    Returns
+    - str: the raw response content from the LLM. The prompt requests the
+      format: "Experience Rating: <number>/10" and a "Conclusion:" section.
+
+    Notes
+    - Ollama is expected to run locally and be available at http://localhost:11434.
+    - This function catches exceptions and returns a readable error string on failure.
     """
 
     prompt = (
@@ -18,12 +35,14 @@ def get_rank_from_ollama(experience: str, jd: str) -> str:
     )
 
     try:
-        # Call Ollama model with the new prompt that only considers experience for ranking
+        # Call Ollama model with the prompt. We return the raw textual content and
+        # leave parsing responsibilities to the caller (for example, `components.extract_rating`).
         response = completion(
             model="ollama/llama3.2:3b",
             messages=[{"role": "user", "content": prompt}],
             api_base="http://localhost:11434"
         )
-        return response.choices[0].message.content  # Return the raw response content
+        return response.choices[0].message.content  # raw response
     except Exception as e:
+        # Return an error string instead of raising to ensure the UI remains stable.
         return f"Error calling Ollama model: {e}"
