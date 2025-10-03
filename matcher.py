@@ -1,36 +1,12 @@
 from sentence_transformers import SentenceTransformer, util
 import ollama
-import json
+from utils import safe_json_loads
 from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
 
 # Load embedding model once
 embedder = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
 
-# llm = pipeline("text-generation", model="mistralai/Mistral-7B-Instruct-v0.2")
 
-def safe_json_loads(response: str):
-    """
-    Extract and parse the first valid JSON object from a response string.
-    """
-    try:
-        start = response.find("{")
-        if start == -1:
-            return {"error": "No JSON object found", "raw_response": response}
-
-        # Balance braces to capture only the first full JSON object
-        depth = 0
-        for i, ch in enumerate(response[start:], start=start):
-            if ch == "{":
-                depth += 1
-            elif ch == "}":
-                depth -= 1
-                if depth == 0:
-                    json_str = response[start:i+1]
-                    return json.loads(json_str)
-
-        return {"error": "Unbalanced braces", "raw_response": response}
-    except Exception as e:
-        return {"error": str(e), "raw_response": response}
 
 def init_hf_llm(model_id="microsoft/Phi-3-mini-4k-instruct"):
     tokenizer = AutoTokenizer.from_pretrained(model_id)
@@ -60,12 +36,12 @@ def llm_match_score(resume_structured, jd_structured, llm=None):
         return {"fit_score": 0.5, "explanation": "Dummy score, no LLM connected."}
     
     prompt = f"""
-    Compare this resume and job description.
+    Compare this resume and job description given below. Find how well they match on key aspects like skills, experience, and overall fit.
     Resume: {resume_structured}
     Job Description: {jd_structured}
 
-    Score the match from (0 to 10) and explain why.
-    Return JSON like:
+    Score the match from (0 to 1) and explain why.
+    Return the scores and explanation in JSON like:
     {{
         "skills_match": <float>,
         "experience_match": <float>,
@@ -75,8 +51,6 @@ def llm_match_score(resume_structured, jd_structured, llm=None):
     """
     response = llm(prompt)
     try:
-        print(response)
         return safe_json_loads(response)
     except Exception as e:
-        print(str(e))
         return {"overall_fit": 0.5, "explanation": response}

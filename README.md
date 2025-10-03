@@ -13,11 +13,13 @@ Traditional keyword-based systems (ATS) miss semantic matches and lack interpret
 ---
 
 ## 🛠️ Solution Approach
+The solution is a UI-driven LLM (Nuextract) powered webApp. The entire developement has been done in python as backend technology and frontend UI interface has been developed in 'Streamlit' - which is a python package for quick UI prototyping and medium scale applications.
+
 
 ### 1. Resume & JD Parsing
 - **PDFs** → parsed using `pdfminer.six`
 - **DOCX** → parsed using `python-docx`
-- **LLM (Ollama/Hugging Face)** used to structure raw text into fields:
+- **LLM (Ollama)** used to structure raw text into fields:
   - Name, Contact Info
   - Skills
   - Education
@@ -26,9 +28,9 @@ Traditional keyword-based systems (ATS) miss semantic matches and lack interpret
 
 ### 2. Candidate–Job Matching
 - Embeddings: `sentence-transformers/all-MiniLM-L6-v2`
-  - Compute similarity between resume and JD text
+  - Compute cosine similarity between resume and JD text
 - LLM Scoring:
-  - Llama 3 (via Ollama) or Phi-3 Mini (via Hugging Face fallback)
+  - Nuextract (via Ollama) 
   - Outputs structured JSON with:
     ```json
     {
@@ -48,7 +50,7 @@ Traditional keyword-based systems (ATS) miss semantic matches and lack interpret
   - Fit score
   - Explanation
 
-### 4. Streamlit Dashboard
+### 4. Streamlit Charts & Visuals
 - Upload resumes + JD
 - Display ranked results in a table
 - Visuals:
@@ -74,23 +76,13 @@ source venv/bin/activate      # Mac/Linux
 venv\Scripts\activate       # Windows
 ```
 
-### 3. Install Python Dependencies
+### 3. Install Python Dependencies from the requirements.txt file available in the repository
 ```bash
 pip install -r requirements.txt
 ```
 
-Dependencies include:
-- `streamlit`
-- `langchain`
-- `llama-index`
-- `sentence-transformers`
-- `transformers`
-- `pdfminer.six`
-- `python-docx`
-- `pandas`
-- `scikit-learn`
 
-### 4. Install Ollama (Optional but Recommended)
+### 4. Install Ollama (Required as the primary LLM being use is run locally)
 Ollama lets you run LLMs **locally** (private, no API keys).
 
 - Download: [https://ollama.com/download](https://ollama.com/download)
@@ -98,39 +90,34 @@ Ollama lets you run LLMs **locally** (private, no API keys).
   ```bash
   ollama --version
   ```
-- Pull a model (e.g., Llama 3):
+- Pull a model:
   ```bash
-  ollama pull llama3
+  ollama pull nuextract
   ```
-- Make sure Ollama service is running:
+- Make sure Ollama service is running. Windows system may require a reboot before the service can be started:
   ```bash
   ollama serve
   ```
-
-### 5. Hugging Face Fallback (if no Ollama)
-If Ollama is unavailable, the system falls back to a **lightweight Hugging Face model**:
-- `microsoft/Phi-3-mini-4k-instruct` (3.8B → smaller & faster than 7B models)
 
 ---
 
 ## ▶️ Running the App
 ```bash
-streamlit run app.py
+streamlit run main.py
 ```
 
-Then open [http://localhost:8501](http://localhost:8501) in your browser.
+The Streamlit app shuld automatically open up in browser. If not, then open [http://localhost:8501](http://localhost:8501) in your browser.
 
 ---
 
 ## 📂 Project Structure
 ```
 cv_sorting_llm/
-│── app.py                 # Streamlit frontend
-│── backend/
-│   ├── parser_llm.py      # Resume parsing (pdfminer/docx + LLM)
-│   ├── matcher.py         # Embedding + LLM scoring
-│   ├── ranker.py          # Ranking logic
-│   └── utils.py           # JSON safety helpers
+│── main.py                 # Streamlit frontend and main driver python file: entry point
+│── parser_llm.py      # Resume parsing (pdfminer/docx + LLM)
+│── matcher.py         # Embedding + LLM scoring
+│── ranker.py          # Ranking logic
+│── utils.py           # JSON safety helpers
 │── data/
 │   ├── resumes/           # Sample resumes
 │   ├── job_descriptions/  # Sample JDs
