@@ -1,0 +1,29 @@
+AstraMatch - Analysis Output
+Final Rankings:
+1. Name: Bhavesh_Wadhwani_Resume.pdf
+   Aggregate Score: 32.85857307910919
+   Skill Match Score: 28.09762179851532
+   Skill Match Explanation: Skills match: 28.10% (combination of exact and semantic matching)
+   Experience Rating / Explanation:
+Experience Rating: 4/10
+
+Conclusion:
+
+* The candidate has around 6.5 years of experience in data-related fields.
+* They have worked as a Senior Consultant-Datasience for 1 year at NeosoftTechnologies, but this role is not clearly categorized as data science or analytics.
+* The candidate's most recent roles are as Data Scientist at NihilentLtd. and Infosys, which indicates some experience in data-related fields.
+* However, the candidate also has an internship role that may have provided different skills and experiences.
+* Overall, the candidate's experience does not fully align with the 5+ years required for this position.
+
+2. Name: Resume-Anuj.pdf
+   Aggregate Score: 11.25752305984497
+   Skill Match Score: 18.76253843307495
+   Skill Match Explanation: Skills match: 18.76% (combination of exact and semantic matching)
+   Experience Rating / Explanation:
+Experience Rating: 0/10
+Conclusion:
+* The candidate's experience is significantly shorter than the required 5+ years.
+* Their experience involves internships rather than full-time positions.
+* There is no explicit mention of data science, machine learning, or analytics roles in their previous positions.
+* The candidate's relevant work experience is limited to internship programs.
+

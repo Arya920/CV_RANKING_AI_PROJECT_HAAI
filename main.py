@@ -485,6 +485,36 @@ if analyze_button:
                     skill_info=rank["skill_match_result"],
                     aggregate_score=rank["aggregate_score"]
                 )
+            # After rendering the final output to the UI, persist a human-readable
+            # summary to a local file named `output.txt` in the project root.
+            try:
+                output_path = os.path.join(os.getcwd(), "output.txt")
+                with open(output_path, "w", encoding="utf-8") as f:
+                    f.write("AstraMatch - Analysis Output\n")
+                    f.write("Final Rankings:\n")
+                    for i, rank in enumerate(rankings, start=1):
+                        f.write(f"{i}. Name: {rank.get('name')}\n")
+                        f.write(f"   Aggregate Score: {rank.get('aggregate_score')}\n")
+                        # Skill match summary
+                        skill_info = rank.get('skill_match_result') or {}
+                        final_score = skill_info.get('final_match_score', skill_info.get('score', 'N/A'))
+                        f.write(f"   Skill Match Score: {final_score}\n")
+                        explanation = skill_info.get('explanation') or skill_info.get('message') or ''
+                        if explanation:
+                            f.write(f"   Skill Match Explanation: {explanation}\n")
+                        # Include the LLM's score/explanation block
+                        sa = rank.get('score_and_explanation')
+                        if sa:
+                            # sa might be an object or string; coerce to string safely
+                            try:
+                                sa_text = str(sa)
+                            except Exception:
+                                sa_text = "(unavailable)"
+                            f.write(f"   Experience Rating / Explanation:\n{sa_text}\n")
+                        f.write("\n")
+                st.success(f"✅ Results saved to output.txt")
+            except Exception as e:
+                st.warning(f"⚠️ Could not save results to disk: {e}")
                 
         except Exception as e:
             st.error("❌ An unexpected error occurred during analysis.")
