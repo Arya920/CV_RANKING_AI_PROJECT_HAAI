@@ -140,7 +140,7 @@ col1, col2, col3 = st.columns([1, 0.2, 1])
 with col1:
     st.markdown("""<div class="uploadSection">""", unsafe_allow_html=True)
     st.markdown("### 📄 Resume Upload")
-    st.markdown("Upload up to 5 resumes in PDF format")
+    st.markdown("Upload up to 10 resumes in PDF format")
     resumes = st.file_uploader(
         "Choose resume files",
         type=["pdf", "docx"],
@@ -195,9 +195,9 @@ st.markdown("<hr>", unsafe_allow_html=True)
 st.markdown("""<div class="stCard" style="text-align: center;">""", unsafe_allow_html=True)
 
 # Limit resumes to 5
-if resumes and len(resumes) > 5:
-    st.warning("You can upload a maximum of 5 resumes.")
-    resumes = resumes[:5]
+if resumes and len(resumes) > 10:
+    st.warning("You can upload a maximum of 10 resumes.")
+    resumes = resumes[:10]
 
 # Initialize the application class
 class DocumentProcessor:
@@ -213,7 +213,7 @@ class DocumentProcessor:
         Attributes:
             max_resumes (int): maximum number of resumes to process.
         """
-        self.max_resumes = 5
+        self.max_resumes = 10
         
     def process_resume(self, resume_file):
         """Extract plain text and structured data from a single resume file.

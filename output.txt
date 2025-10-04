@@ -1,29 +1,29 @@
 AstraMatch - Analysis Output
 Final Rankings:
 1. Name: Bhavesh_Wadhwani_Resume.pdf
-   Aggregate Score: 32.85857307910919
+   Aggregate Score: 40.85857307910919
    Skill Match Score: 28.09762179851532
    Skill Match Explanation: Skills match: 28.10% (combination of exact and semantic matching)
    Experience Rating / Explanation:
-Experience Rating: 4/10
-
+Experience Rating: 6/10
 Conclusion:
+- The candidate has worked as a Data Scientist for 2.5 years.
+- The longest tenure is 5 years in the role of Senior Consultant-Datasience at NeosoftTechnologies.
+- They have also worked as Software Engineer-WebDeveloperIntern for 1 year.
+- Although they have experience in data science roles, it's limited to around 3 years.
+- Their current experience doesn't fully match the required 5+ years.
 
-* The candidate has around 6.5 years of experience in data-related fields.
-* They have worked as a Senior Consultant-Datasience for 1 year at NeosoftTechnologies, but this role is not clearly categorized as data science or analytics.
-* The candidate's most recent roles are as Data Scientist at NihilentLtd. and Infosys, which indicates some experience in data-related fields.
-* However, the candidate also has an internship role that may have provided different skills and experiences.
-* Overall, the candidate's experience does not fully align with the 5+ years required for this position.
-
-2. Name: Resume-Anuj.pdf
-   Aggregate Score: 11.25752305984497
-   Skill Match Score: 18.76253843307495
-   Skill Match Explanation: Skills match: 18.76% (combination of exact and semantic matching)
+2. Name: PRIYA_SHARMA_Resume.pdf
+   Aggregate Score: 12.166478335857391
+   Skill Match Score: 13.610797226428986
+   Skill Match Explanation: Skills match: 13.61% (combination of exact and semantic matching)
    Experience Rating / Explanation:
-Experience Rating: 0/10
+Experience Rating: 1/10
+
 Conclusion:
-* The candidate's experience is significantly shorter than the required 5+ years.
-* Their experience involves internships rather than full-time positions.
-* There is no explicit mention of data science, machine learning, or analytics roles in their previous positions.
-* The candidate's relevant work experience is limited to internship programs.
+• The candidate does not meet the experience requirement of at least 5 years in data science, machine learning, or analytics roles.
+• Their experience is limited to frontend development roles without any indication of expertise in data science or related fields.
+• There is no mention of any coursework, certifications, or academic background that suggests a foundation in data science and machine learning.
+• The candidate's experience is mostly recent, with the most recent role ending in 2022, which may indicate a lack of long-term commitment to the field.
+• Overall, the candidate's resume does not provide sufficient evidence of their qualifications for a data science or analytics role.
 
