@@ -1,29 +1,131 @@
 AstraMatch - Analysis Output
 Final Rankings:
 1. Name: Bhavesh_Wadhwani_Resume.pdf
-   Aggregate Score: 40.85857307910919
-   Skill Match Score: 28.09762179851532
-   Skill Match Explanation: Skills match: 28.10% (combination of exact and semantic matching)
+   Aggregate Score: 39.26669367722103
+   Skill Match Score: 25.44448946203504
+   Skill Match Explanation: Skills match: 25.44% (combination of exact and semantic matching)
    Experience Rating / Explanation:
 Experience Rating: 6/10
 Conclusion:
-- The candidate has worked as a Data Scientist for 2.5 years.
-- The longest tenure is 5 years in the role of Senior Consultant-Datasience at NeosoftTechnologies.
-- They have also worked as Software Engineer-WebDeveloperIntern for 1 year.
-- Although they have experience in data science roles, it's limited to around 3 years.
-- Their current experience doesn't fully match the required 5+ years.
+* The candidate has over 4 years of experience in data science and backend integration.
+* They have worked in various roles, including Senior Consultant-Datasence and Data Scientist at reputable companies like NeosoftTechnologies and Infosys.
+* However, the exact match for a Senior Consultant-Datasence role is not provided.
+* The candidate's experience does not exceed 5+ years as per the job requirement.
 
-2. Name: PRIYA_SHARMA_Resume.pdf
-   Aggregate Score: 12.166478335857391
-   Skill Match Score: 13.610797226428986
-   Skill Match Explanation: Skills match: 13.61% (combination of exact and semantic matching)
+2. Name: ARJUN_DESHMUKH_Resume.pdf
+   Aggregate Score: 39.189935982227325
+   Skill Match Score: 25.316559970378876
+   Skill Match Explanation: Skills match: 25.32% (combination of exact and semantic matching)
    Experience Rating / Explanation:
-Experience Rating: 1/10
+Experience Rating: 6/10
 
 Conclusion:
-• The candidate does not meet the experience requirement of at least 5 years in data science, machine learning, or analytics roles.
-• Their experience is limited to frontend development roles without any indication of expertise in data science or related fields.
-• There is no mention of any coursework, certifications, or academic background that suggests a foundation in data science and machine learning.
-• The candidate's experience is mostly recent, with the most recent role ending in 2022, which may indicate a lack of long-term commitment to the field.
-• Overall, the candidate's resume does not provide sufficient evidence of their qualifications for a data science or analytics role.
+* The candidate has a total of 11 years of experience in the field of data science.
+* Their most recent position as Senior Data Science Manager and previous roles as Data Science Lead and Senior Data Analyst suggest a strong background in data analysis, modeling, and leadership.
+* However, there is no explicit mention of backend integration responsibilities in their current or past positions.
+* The candidate's experience spans across multiple companies and locations, indicating adaptability and versatility.
+
+3. Name: juan_josecarin_Resume.pdf
+   Aggregate Score: 35.881111443042755
+   Skill Match Score: 19.80185240507126
+   Skill Match Explanation: Skills match: 19.80% (combination of exact and semantic matching)
+   Experience Rating / Explanation:
+Experience Rating: 6/10
+Conclusion:
+
+* The candidate has a total of 11 positions listed, but only two (2014-2016) are in Data Scientist roles.
+* While the candidate does have sales and engineering experience, it's unclear if this experience directly translates to backend integration responsibilities required for data science.
+* There is no clear mention of the candidate having worked with backend technologies or programming languages commonly used in data science.
+* The positions listed prior to 2014 are mostly related to education and do not provide direct evidence of relevant work experience.
+* Only a small portion (2 out of 11) of their experience aligns with the job requirements.
+
+4. Name: ANITA_VERMA_Resume.pdf
+   Aggregate Score: 31.828291535377502
+   Skill Match Score: 26.380485892295837
+   Skill Match Explanation: Skills match: 26.38% (combination of exact and semantic matching)
+   Experience Rating / Explanation:
+Experience Rating: 4/10
+Conclusion:
+• The candidate has a total of 9 years of experience, which meets the minimum requirement.
+• Their roles include Data Scientist and Data Analyst, indicating a background in data-related tasks.
+• However, there is no explicit mention of backend integration responsibilities.
+• The earliest start date (2016-07) indicates that the candidate is within the age range for many entry-level positions.
+• Overall, while the candidate has some relevant experience, it does not precisely match the job description's requirements.
+
+5. Name: RAVI_KUMAR_Resume.pdf
+   Aggregate Score: 27.934673394475663
+   Skill Match Score: 19.891122324126105
+   Skill Match Explanation: Skills match: 19.89% (combination of exact and semantic matching)
+   Experience Rating / Explanation:
+Experience Rating: 4/10
+
+Conclusion:
+* The candidate's resume does not mention any direct experience in data science or backend integration.
+* There is no indication of relevant technical skills or experience that aligns with the job requirements.
+* The candidate may have general experience or education in a related field, but it's unclear how this translates to the specific job requirements.
+* Without more information about the candidate's experience, it's difficult to determine their fit for the role.
+
+6. Name: RAJAT_MEHRA_Resume.pdf
+   Aggregate Score: 20.764395671231405
+   Skill Match Score: 21.273992785385676
+   Skill Match Explanation: Skills match: 21.27% (combination of exact and semantic matching)
+   Experience Rating / Explanation:
+Experience Rating: 2/10
+
+Conclusion:
+- The candidate's longest tenure was 1 year as a Data Analyst (Junior Level) at Clarity Insights Pvt. Ltd.
+- The shortest tenure was 6 months as a Data Analytics Intern at Bizlytics Labs
+- None of the candidates have more than 5 years of professional experience in data science or backend integration responsibilities.
+- They lack significant professional experience in these fields to match the job requirements.
+- Their experience profile does not align with the job expectations.
+
+7. Name: RAHUL_JAIN_Resume.pdf
+   Aggregate Score: 20.141276751245773
+   Skill Match Score: 20.235461252076288
+   Skill Match Explanation: Skills match: 20.24% (combination of exact and semantic matching)
+   Experience Rating / Explanation:
+Experience Rating: 2/10
+Conclusion:
+• The candidate's longest stint was as a Junior Data Scientist, which is less than 3 years.
+• Both positions mentioned are in the field of data science but lack backend integration responsibilities.
+• The job description specifically mentions a requirement for strong backend integration experience.
+• There is no direct mention of frontend or full-stack responsibilities in the resume.
+• The candidate's internship was remote and only lasted about 6 months.
+
+8. Name: VIKRAM_SEN_Resume.pdf
+   Aggregate Score: 18.128201791218345
+   Skill Match Score: 16.880336318697246
+   Skill Match Explanation: Skills match: 16.88% (combination of exact and semantic matching)
+   Experience Rating / Explanation:
+Experience Rating: 2/10
+Conclusion:
+* The candidate's longest tenure was as a Senior Editor – National Affairs, but it does not relate to the job description.
+* The Principal Correspondent role shows some journalism experience, but it doesn't directly align with data science or backend integration responsibilities.
+* The Staff Reporter position is too early in their career and lacks relevant experience for the required job.
+* There is no indication of any formal training or education in data science.
+
+9. Name: PRIYA_SHARMA_Resume.pdf
+   Aggregate Score: 16.267177045345306
+   Skill Match Score: 13.778628408908844
+   Skill Match Explanation: Skills match: 13.78% (combination of exact and semantic matching)
+   Experience Rating / Explanation:
+Experience Rating: 2/10
+Conclusion:
+* The candidate has limited experience, having worked as a Junior Frontend Developer for only 2 years.
+* Their frontend development experience is not aligned with the required 5+ years of professional experience in data science.
+* There is no mention of any backend integration responsibilities in their resume.
+* No relevant experience is mentioned that aligns with the job requirements.
+
+10. Name: Anuj_Resume.pdf
+   Aggregate Score: 9.255559418882642
+   Skill Match Score: 15.425932364804405
+   Skill Match Explanation: Skills match: 15.43% (combination of exact and semantic matching)
+   Experience Rating / Explanation:
+Experience Rating: 0/10
+Conclusion:
+- The candidate's internship experiences started after the required 5 years of professional experience.
+- There is no direct mention of any professional data science or backend integration roles in their resume.
+- Lack of specificity regarding job titles, technologies used, and company sizes.
+- No indication of industry expertise relevant to data science and backend integration.
+- The candidate's current internship positions do not align with the job requirements.
 

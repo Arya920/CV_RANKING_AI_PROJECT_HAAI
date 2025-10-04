@@ -1,64 +1,97 @@
-Senior Data Scientist (Backend & Advanced Databases)
+✅ SENIOR DATA SCIENTIST – BACKEND & ADVANCED DATABASES
 
-Location: [Your Location]
-Type: Full-Time
-Experience: 5+ Years
+📍 Location: Bengaluru, India | 🕒 Employment Type: Full-Time | 💼 Experience: 5+ Years
 
-About Us:
-We are an innovative technology company committed to leveraging data-driven insights to transform business outcomes. We are seeking a highly skilled Senior Data Scientist with strong backend development experience and expertise in advanced databases to join our dynamic team.
+About Quantiva Technologies
 
-Key Responsibilities:
+Quantiva Technologies is a fast-growing AI and data-driven SaaS company headquartered in Bengaluru, with a mission to revolutionize enterprise operations through intelligent automation and predictive analytics. Our clients range from Fortune 500 companies to fast-scaling startups, and our platforms handle billions of data points across finance, logistics, and retail verticals.
 
-Design, develop, and deploy scalable data science solutions that integrate with backend systems.
+We are looking for a Senior Data Scientist with a strong foundation in backend development and expertise in advanced databases to join our Core Intelligence Team. This is a hybrid role that blends data science with backend engineering — ideal for someone who can build intelligent systems and also make them production-ready.
 
-Build and maintain data pipelines to extract, transform, and load (ETL) large volumes of structured and unstructured data.
+Key Responsibilities
 
-Collaborate with engineering teams to integrate machine learning models into production systems.
+Design, build, and deploy machine learning models that solve high-impact business problems
 
-Optimize and manage advanced databases, including NoSQL and distributed databases, for high-performance data access.
+Develop scalable backend components (APIs/microservices) to integrate ML models into core product workflows
 
-Develop and maintain APIs and backend services supporting data-driven applications.
+Architect and manage large-scale data pipelines for ETL across structured and unstructured sources (SQL, NoSQL, JSON, logs, APIs)
 
-Analyze large datasets to extract actionable insights and build predictive models.
+Optimize performance and reliability of databases and data layers, including PostgreSQL, MongoDB, and Cassandra
 
-Mentor junior data scientists and collaborate cross-functionally with product, engineering, and business teams.
+Collaborate with software engineers and DevOps to deploy models and pipelines on cloud infrastructure (AWS/GCP)
 
-Required Qualifications:
+Conduct exploratory data analysis (EDA) and create prototypes for NLP, time series, and classification models
 
-Bachelor’s or Master’s degree in Computer Science, Data Science, Statistics, or related field.
+Drive best practices in model monitoring, versioning, and retraining using MLOps tools
 
-5+ years of experience in data science, machine learning, or analytics roles.
+Lead code reviews, mentor junior team members, and contribute to internal ML architecture documentation
 
-Strong programming skills in Python, Java, or similar backend languages.
+Translate complex data insights into business-friendly narratives and actionable strategies
 
-Experience with backend frameworks (e.g., Flask, Django, Spring).
+Required Qualifications
 
-Expertise in SQL and advanced databases such as PostgreSQL, MongoDB, Cassandra, or similar.
+Bachelor's or Master's degree in Computer Science, Data Science, Applied Mathematics, or a related field
 
-Experience with distributed databases and big data technologies (e.g., Hadoop, Spark).
+5+ years of professional experience in data science with strong backend integration responsibilities
 
-Familiarity with cloud platforms (AWS, GCP, Azure) and containerization (Docker, Kubernetes).
+Strong programming skills in Python (Pandas, NumPy, Scikit-learn) and Java or Go for backend services
 
-Solid understanding of data structures, algorithms, and software engineering best practices.
+Solid experience with backend frameworks like Flask, FastAPI, Django, or Spring Boot
 
-Excellent problem-solving skills and ability to work in a fast-paced environment.
+Expertise in SQL and advanced databases: PostgreSQL, MongoDB, Cassandra, or ClickHouse
 
-Preferred Skills:
+Hands-on experience with distributed data systems and big data frameworks like Apache Spark or Hadoop
 
-Experience deploying ML models with REST APIs or microservices.
+Proficiency with Docker, Kubernetes, and cloud platforms (AWS, GCP, or Azure)
 
-Knowledge of data warehousing and ETL tools.
+Deep understanding of software engineering principles, clean code, and system design for ML applications
 
-Familiarity with CI/CD pipelines and DevOps practices.
+Strong communication and documentation skills; ability to explain models and decisions clearly to both tech and non-tech stakeholders
 
-Experience with visualization tools like Tableau, Power BI, or similar.
+Preferred Skills
 
-What We Offer:
+Experience deploying ML models via RESTful APIs or gRPC services in production
 
-Competitive salary and benefits package.
+Familiarity with Airflow, MLflow, or Kubeflow for workflow and experiment tracking
 
-Opportunity to work on cutting-edge technologies and large-scale data projects.
+Knowledge of data warehousing tools like BigQuery, Redshift, or Snowflake
 
-Collaborative and inclusive work environment.
+Understanding of streaming data pipelines (e.g., Kafka, Spark Streaming)
 
-Career growth and continuous learning opportunities.
+Experience working in Agile teams using GitHub, Jira, and CI/CD pipelines
+
+What We Offer
+
+💼 Competitive compensation: ₹32–40 LPA (negotiable for exceptional candidates)
+
+🌍 Hybrid work policy with flexibility and remote setup support
+
+🧠 Work on cutting-edge projects in NLP, forecasting, and enterprise AI at scale
+
+📈 Rapid career growth and learning budget for certifications, courses, and conferences
+
+🏢 Beautiful campus-style office in HSR Layout, Bengaluru with free meals and wellness benefits
+
+🤝 A smart, humble, and highly collaborative team that values deep work and creativity
+
+Our Stack
+
+Languages: Python, Java, SQL, Go
+
+Databases: PostgreSQL, MongoDB, Cassandra, Redis
+
+Frameworks: Flask, FastAPI, Spring Boot
+
+Cloud & Infra: AWS, GCP, Docker, Kubernetes, Airflow, Terraform
+
+ML & DS: Scikit-learn, PyTorch, XGBoost, MLflow, Hugging Face Transformers
+
+Tools: GitHub, Jira, DataDog, Power BI, Looker
+
+How to Apply
+
+Ready to make an impact? Apply now with your resume and GitHub/portfolio links at:
+📧 careers@quantivatech.com
+ | Subject: Application – Senior Data Scientist (Backend)
+
+Quantiva Technologies is an equal opportunity employer. We celebrate diversity and are committed to creating an inclusive environment for all employees.
